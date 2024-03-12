@@ -55,12 +55,20 @@ We conduct experiments over *two* real-world datasets, WN18RR and NELL-995, whic
 4. Place Files: Put the downloaded dataset in the same directory as the `KGLLM_preprocess.py` script.
 
 5. Run Script: Open a terminal or command prompt, navigate to the directory containing the script and files, and run the following command:
-  ```python
-  python KGLLM_preprocess.py
-  ```
+   ```python
+   python KGLLM_preprocess.py
+   ```
 5. Check Output: After running the script, you should find some new CSV files containing the preprocessed training data and testing data in the same directory.
 
 ## Finetune
+Three distinct LLMs are utilized: Flan-T5-Large, LlaMa2-7B, and Gemma-7B.
+
+| Model  | #Parameter | #Maximum Token  | #Technique  |
+| ------------- |:-------------:| -----:| -----:|
+| [Flan-T5-Large](https://huggingface.co/google/flan-t5-large)  | 783M | 512 | Global Fine-tune |
+| [LLaMa2-7B](https://huggingface.co/meta-llama/Llama-2-7b-hf)      | 7B      |   4096 |   4bit-Lora |
+| [Gemma-7B](https://huggingface.co/google/gemma-7b)      | 7B      |   4096 |   4bit-Lora |
+
 TODO
 
 ## Test
