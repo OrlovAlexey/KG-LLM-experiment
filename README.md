@@ -43,7 +43,18 @@ We conduct experiments over *two* real-world datasets, WN18RR and NELL-995, whic
 | [NELL-995](https://github.com/thunlp/OpenKE/tree/OpenKE-PyTorch/benchmarks/NELL-995)      | 75,492      |   149,678 |   200 |
 
 ## Preprocessing
-TODO
+
+1. Clone Repository: Clone this repository to your local machine.
+
+2. Download Data: Obtain the relation2id.txt and train2id.txt files from dataset.
+
+3. Place Files: Put the downloaded files in the same directory as the KGLLM_preprocess.py script.
+
+4. Run Script: Open a terminal or command prompt, navigate to the directory containing the script and files, and run the following command:
+```\python
+python KGLLM_preprocess.py
+```
+5. Check Output: After running the script, you should find some new CSV files containing the preprocessed data in the same directory.
 
 ## Finetune
 TODO
