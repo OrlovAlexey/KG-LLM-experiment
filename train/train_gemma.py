@@ -147,7 +147,8 @@ def train(model, tokenizer, dataset, output_dir):
             per_device_train_batch_size=1,
             gradient_accumulation_steps=4,
             warmup_steps=2,
-            max_steps=15,
+            # max_steps=15,
+            num_train_epochs=1,
             learning_rate=2e-4,
             fp16=True,
             logging_steps=1,
@@ -214,16 +215,13 @@ def main(file_path = "/content/train.csv", output_dir = "final_checkpoint"):
     output_dir = output_dir
     train(model, tokenizer, dataset, output_dir)
 
-main("/content/train.csv", "final_checkpoint")
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Script for fine-tuning gemma-7b models")
+    parser.add_argument("--input_file", type=str, default="/content/train.csv", help="Path to the input CSV file")
+    parser.add_argument("--output_dir", type=str, default="final_checkpoint", help="Directory to save the final model")
+    args = parser.parse_args()
 
-model = AutoPeftModelForCausalLM.from_pretrained("final_checkpoint", device_map="auto", torch_dtype=torch.bfloat16)
-model = model.merge_and_unload()
+    main(input_file=args.input_file, output_dir=args.output_dir)
 
-output_merged_dir = "results/llama2/final_merged_checkpoint"
-os.makedirs(output_merged_dir, exist_ok=True)
-model.save_pretrained(output_merged_dir, safe_serialization=True)
 
-# save tokenizer for easy inference
-tokenizer = AutoTokenizer.from_pretrained("google/gemma-7b")
-tokenizer.save_pretrained(output_merged_dir)
 

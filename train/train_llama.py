@@ -147,7 +147,8 @@ def train(model, tokenizer, dataset, output_dir):
             per_device_train_batch_size=1,
             gradient_accumulation_steps=4,
             warmup_steps=2,
-            max_steps=15,
+            # max_steps=15,
+            num_train_epochs=1,
             learning_rate=2e-4,
             fp16=True,
             logging_steps=1,
@@ -198,7 +199,7 @@ def train(model, tokenizer, dataset, output_dir):
 # TODO 这里file_path改成自己的csv 确保你的数据在Prompt的column里
 def main(file_path = "/content/train.csv", output_dir = "final_checkpoint"):
     #Models that need to be fine-tuned
-    model_name = "google/flan-t5-large"
+    model_name = "meta-llama/Llama-2-7b-hf"
     bnb_config = create_bnb_config()
     model, tokenizer = load_model(model_name, bnb_config)
     df = pd.read_csv(file_path)
@@ -214,15 +215,13 @@ def main(file_path = "/content/train.csv", output_dir = "final_checkpoint"):
     output_dir = output_dir
     train(model, tokenizer, dataset, output_dir)
 
-main("/content/train.csv", "final_checkpoint")
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Script for fine-tuning Llama models")
+    parser.add_argument("--input_file", type=str, default="/content/train.csv", help="Path to the input CSV file")
+    parser.add_argument("--output_dir", type=str, default="final_checkpoint", help="Directory to save the final model")
+    args = parser.parse_args()
 
-model = AutoPeftModelForCausalLM.from_pretrained("final_checkpoint", device_map="auto", torch_dtype=torch.bfloat16)
-model = model.merge_and_unload()
+    main(input_file=args.input_file, output_dir=args.output_dir)
 
-output_merged_dir = "results/llama2/final_merged_checkpoint"
-os.makedirs(output_merged_dir, exist_ok=True)
-model.save_pretrained(output_merged_dir, safe_serialization=True)
 
-# save tokenizer for easy inference
-tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-large")
-tokenizer.save_pretrained(output_merged_dir)
+
