@@ -64,7 +64,7 @@ unique_rows = set()
 size = 30
 # how many positive and negative data set you want to train, the more dataset, the more time to train
 total = 60000
-fieldnames = ['Prompt', 'input_text', 'output_text']
+fieldnames = ['Prompt', 'input_text', 'output_text', 'train_input_text', 'train_output_text']
 
 instruction = 'Answer the following yes/no question by reasoning step-by-step. '
 
@@ -133,8 +133,8 @@ with open("train_data.csv", mode="w", newline='') as tra:
                         output_text += 'So node {} {} node {}. The answer is yes.'.format(first_node, final_relation, last_node)
                         prompt = 'Is node {} connnected with node {}?'.format(first_node, last_node)
                         comb = "###Instruction:\n" + instruction + prompt + "\n\n###Input:\n" + input_text + "\n\n###Response:\n" + output_text
-                        writer_pos.writerow({'Prompt': comb, 'input_text': input_text + prompt, 'output_text': output_text})
-                        writer_tra.writerow({'Prompt': comb, 'input_text': input_text + prompt, 'output_text': output_text})
+                        writer_pos.writerow({'Prompt': comb, 'input_text': input_text + prompt, 'output_text': output_text, 'train_input_text': "###Instruction:\n" + instruction + prompt + "\n\n###Input:\n" + input_text, 'train_output_text' : "###Response:\n" + output_text})
+                        writer_tra.writerow({'Prompt': comb, 'input_text': input_text + prompt, 'output_text': output_text, 'train_input_text': "###Instruction:\n" + instruction + prompt + "\n\n###Input:\n" + input_text, 'train_output_text' : "###Response:\n" + output_text})
                         pos_count += 1
                         term = False
                         times += 1
@@ -144,8 +144,8 @@ with open("train_data.csv", mode="w", newline='') as tra:
                         output_text += 'So node {} {} node {}. The answer is yes.'.format(last_node, final_relation, first_node)
                         prompt = 'Is node {} connected with node {}?'.format(last_node, first_node)
                         comb = "###Instruction:\n" + instruction + prompt + "\n\n###Input:\n" + input_text + "\n\n###Response:\n" + output_text
-                        writer_pos.writerow({'Prompt': comb, 'input_text': input_text + prompt, 'output_text': output_text})
-                        writer_tra.writerow({'Prompt': comb, 'input_text': input_text + prompt, 'output_text': output_text})
+                        writer_pos.writerow({'Prompt': comb, 'input_text': input_text + prompt, 'output_text': output_text, 'train_input_text': "###Instruction:\n" + instruction + prompt + "\n\n###Input:\n" + input_text, 'train_output_text' : "###Response:\n" + output_text})
+                        writer_tra.writerow({'Prompt': comb, 'input_text': input_text + prompt, 'output_text': output_text, 'train_input_text': "###Instruction:\n" + instruction + prompt + "\n\n###Input:\n" + input_text, 'train_output_text' : "###Response:\n" + output_text})
                         pos_count += 1
                         term = False
                         times += 1
@@ -155,8 +155,8 @@ with open("train_data.csv", mode="w", newline='') as tra:
                         output_text += 'So there is no connection between node {} and node {}. The answer is no.'.format(first_node, last_node)
                         prompt = 'Is node {} connected with node {}?'.format(first_node, last_node)
                         comb = "###Instruction:\n" + instruction + prompt + "\n\n###Input:\n" + input_text + "\n\n###Response:\n" + output_text
-                        writer_neg.writerow({'Prompt': comb, 'input_text': input_text + prompt, 'output_text': output_text})
-                        writer_tra.writerow({'Prompt': comb, 'input_text': input_text + prompt, 'output_text': output_text})
+                        writer_neg.writerow({'Prompt': comb, 'input_text': input_text + prompt, 'output_text': output_text, 'train_input_text': "###Instruction:\n" + instruction + prompt + "\n\n###Input:\n" + input_text, 'train_output_text' : "###Response:\n" + output_text})
+                        writer_tra.writerow({'Prompt': comb, 'input_text': input_text + prompt, 'output_text': output_text, 'train_input_text': "###Instruction:\n" + instruction + prompt + "\n\n###Input:\n" + input_text, 'train_output_text' : "###Response:\n" + output_text})
                         neg_count += 1
                         term = True
                         times += 1
