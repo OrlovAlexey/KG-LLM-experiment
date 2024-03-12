@@ -46,18 +46,22 @@ We conduct experiments over *two* real-world datasets, WN18RR and NELL-995, whic
 
 1. Clone Repository: Clone this repository to your local machine.
 
-2. Download Data: Obtain the relation2id.txt and train2id.txt files from dataset.
+   ```python
+   git clone
+   ```
 
-3. Place Files: Put the downloaded files in the same directory as the KGLLM_preprocess.py script.
+3. Download Data: Download the dataset from the previously mentioned library.
 
-4. Run Script: Open a terminal or command prompt, navigate to the directory containing the script and files, and run the following command:
-```\python
-python KGLLM_preprocess.py
-```
-5. Check Output: After running the script, you should find some new CSV files containing the preprocessed data in the same directory.
+4. Place Files: Put the downloaded dataset in the same directory as the `KGLLM_preprocess.py` script.
+
+5. Run Script: Open a terminal or command prompt, navigate to the directory containing the script and files, and run the following command:
+  ```python
+  python KGLLM_preprocess.py
+  ```
+5. Check Output: After running the script, you should find some new CSV files containing the preprocessed training data and testing data in the same directory.
 
 ## Finetune
 TODO
 
 ## Test
-
+TODO
