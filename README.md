@@ -102,4 +102,38 @@ Example code:
 After training, the trained model checkpoint files will be generated in the specified output_dir directory.
 
 ## Test
-TODO
+
+1. Modify Test File
+   
+Open the test script file (test_link_icl.py) and locate the following parameters:
+
+test_file: Modify this parameter to specify the path to the test file (modified_test.csv).
+
+model: Modify this parameter to specify the path to the trained model checkpoint directory.
+
+test_limit: Modify this parameter to specify the number of tests.
+
+Example code:
+```python
+   csv_file = '/content/icl_relation.csv'
+   model = AutoPeftModelForCausalLM.from_pretrained("final_checkpoint", device_map="auto", torch_dtype=torch.bfloat16)
+   test_limit = 5000
+```
+
+2. Run the Test Script
+   
+Run the test script (test.py) in the command line and wait for the model testing to complete.
+
+Example command:
+```python
+   python test_link_icl.py
+```
+
+3. View Accuracy
+After testing, the script will output the accuracy of the model on the test dataset.
+
+Example output:
+```python
+   Accuracy: 0.855
+   F1: 0.843
+```
