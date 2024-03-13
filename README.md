@@ -115,7 +115,7 @@ test_limit: Modify this parameter to specify the number of tests.
 
 Example code:
 ```python
-   csv_file = '/content/icl_relation.csv'
+   csv_file = '/content/modified_test.csv'
    model = AutoPeftModelForCausalLM.from_pretrained("final_checkpoint", device_map="auto", torch_dtype=torch.bfloat16)
    test_limit = 5000
 ```
