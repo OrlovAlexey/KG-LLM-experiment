@@ -357,10 +357,10 @@ def main(model_name, train_file, valid_file, entity_file, relation_file):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Script for fine-tuning KGLLM models")
     parser.add_argument("--model_name", type=str, default="flan-t5", help="which model: flan-t5, llama2, gemma")
-    parser.add_argument("--train_file", type=str, default=r"C:\Users\super\OneDrive\Desktop\research\KGLLM\figure3\train_data.csv", help="Path to the train CSV file")
-    parser.add_argument("--valid_file", type=str, default=r"C:\Users\super\OneDrive\Desktop\research\KGLLM\figure3\val_data.csv", help="Path to the validation CSV file")
-    parser.add_argument("--entity_file", type=str, default=r"C:\Users\super\OneDrive\Desktop\research\KGLLM\WN18RR\entity2id.txt", help="Path to the entity2id.txt file")
-    parser.add_argument("--relation_file", type=str, default=r"C:\Users\super\OneDrive\Desktop\research\KGLLM\WN18RR\relation2id.txt", help="Path to the relation2id.txt file")
+    parser.add_argument("--train_file", type=str, default=r"train_data.csv", help="Path to the train CSV file")
+    parser.add_argument("--valid_file", type=str, default=r"val_data.csv", help="Path to the validation CSV file")
+    parser.add_argument("--entity_file", type=str, default=r"entity2id.txt", help="Path to the entity2id.txt file")
+    parser.add_argument("--relation_file", type=str, default=r"relation2id.txt", help="Path to the relation2id.txt file")
     args = parser.parse_args()
 
     main(model_name=args.model_name, train_file=args.train_file, valid_file=args.valid_file, entity_file=args.entity_file, relation_file=args.relation_file)
