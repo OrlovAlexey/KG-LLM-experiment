@@ -1,3 +1,8 @@
+# Результаты эксперимента
+Полученный датасет с путями https://drive.google.com/drive/folders/1YYLDm_pUAqEonCHTaYyFgz8FaGJtuV4k?usp=drive_link \
+Чекпоинт обученной модели `Flan-T5-Large` https://drive.google.com/drive/folders/1MPQ3nmOKQtx3PjIrIS3lO2pPr-z-1bCD?usp=sharing\
+Логи обучения TensorBoard в папке `train/logs` 
+
 # KG-LLM: Knowledge Graph Large Language Model for Link Prediction
 
 ![](KG.png?raw=true)
