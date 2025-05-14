@@ -1,3 +1,6 @@
+import os
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "5"
 
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, TrainingArguments, Trainer
 from torch.utils.data import Dataset, DataLoader
@@ -27,7 +30,7 @@ print(device)
 
 #TODO:
 # !huggingface-cli login
-login(token = "hf_")
+# login(token = "hf_")
 
 
 def load_model(model_name, bnb_config):
@@ -162,6 +165,7 @@ def train(model, tokenizer, train_dataset, valid_dataset, output_dir):
             logging_steps=1,
             output_dir="outputs",
             optim="paged_adamw_8bit",
+            auto_find_batch_size=True
         ),
         data_collator=DataCollatorForLanguageModeling(tokenizer, mlm=False)
     )
@@ -264,14 +268,14 @@ def main(model_name, train_file, valid_file, entity_file, relation_file):
         #     return {'input_ids': input_ids, 'attention_mask': attention_mask, 'labels': label_ids}
 
         # Load the data
-        train_data = pd.read_csv(train_file)
-        valid_data = pd.read_csv(valid_file)
+        train_data = pd.read_csv(train_file).iloc[:10000]
+        valid_data = pd.read_csv(valid_file).iloc[:200]
 
         train_dataset = HFDataset.from_pandas(train_data)
         valid_dataset = HFDataset.from_pandas(valid_data)
 
         _preprocessing_function = partial(preprocess_batch, tokenizer=tokenizer)
-        train_dataset = train_dataset.map(_preprocessing_function, batched=True)
+        train_dataset = train_dataset.map(_preprocessing_function, batched=True, num_proc=8)
         valid_dataset = valid_dataset.map(_preprocessing_function, batched=True)
 
         train_dataset = train_dataset.shuffle(seed=seed)
@@ -279,13 +283,15 @@ def main(model_name, train_file, valid_file, entity_file, relation_file):
         # Define the training arguments
         training_args = TrainingArguments(
             output_dir='./results',
-            num_train_epochs=5,
+            num_train_epochs=1,
             learning_rate=3e-4,
             per_device_train_batch_size=8,
             per_device_eval_batch_size=8,
+            auto_find_batch_size=True,
             warmup_steps=500,
             weight_decay=0.01,
             logging_dir='./logs',
+            report_to=["tensorboard"],
             logging_steps=100,
             evaluation_strategy='steps',
             eval_steps=500,

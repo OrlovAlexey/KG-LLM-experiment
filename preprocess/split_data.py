@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import glob
 from sklearn.model_selection import train_test_split
+from tqdm import tqdm
 
 # Combine all the csv files
 all_files = glob.glob("paths_length_*.csv")
@@ -11,7 +12,8 @@ negative_data = []
 
 for filename in all_files:
     df = pd.read_csv(filename)
-    for _, row in df.iterrows():
+    print(len(df))
+    for _, row in tqdm(df.iterrows()):
         if "The answer is yes." in row['output_text']:
             positive_data.append(row)
         else:
@@ -22,6 +24,7 @@ positive_data = positive_data[:min_length]
 negative_data = negative_data[:min_length]
 
 combined_data = positive_data + negative_data
+print("YES")
 
 combined_data = pd.DataFrame(combined_data).sample(frac=1, random_state=42).reset_index(drop=True)
 
@@ -44,7 +47,7 @@ val_data = pd.concat([val_pos, val_neg]).sample(frac=1, random_state=42).reset_i
 
 train_data.to_csv("train_data.csv", index=False)
 val_data.to_csv("val_data.csv", index=False)
-
+print("YES")
 test_data['num_nodes'] = test_data['input_text'].apply(lambda x: x.count('node_') // 2 + 1)
 
 for num_nodes in range(2, 7):

@@ -3,6 +3,7 @@ import json
 from collections import deque
 import csv
 import os
+from tqdm import tqdm
 
 input_file = open(r"train2id.txt", "r")
 
@@ -12,7 +13,7 @@ number = int(input_file.readline())
 nodes = set()
 graph = {}
 
-for i in range(number):
+for i in tqdm(range(number), desc="Reading"):
     content = input_file.readline()
     node1, node2, relation = content.strip().split()
     nodes.add(node1)
@@ -61,7 +62,7 @@ def generate_all_paths(graph, max_length):
                 path.pop()
 
     paths = {i: [] for i in range(2, max_length + 1)}
-    for node in graph:
+    for node in tqdm(graph, desc="DFS"):
         dfs(node, [node], 1)
     return paths
 
@@ -82,9 +83,12 @@ def convert_path_to_natural_language(path):
     return input_text, output_text
 
 def process_paths(paths):
-    for length, path_list in paths.items():
+    i = 0
+    for length, path_list in tqdm(paths.items(), desc="paths"):
         data = []
-        for path in path_list:
+        for path in tqdm(path_list, desc="path_list"):
+            if i >= 2000000:
+                break
             input_text, output_text = convert_path_to_natural_language(path)
             first_node = path[0]
             last_node = path[-1]
@@ -98,8 +102,9 @@ def process_paths(paths):
             final_output_text = f"###Response:\n{output_text} {ground_truth_answer}"
             comb = f"###Instruction:\nBelow is the detail of a knowledge graph path.\n{prompt}\n{instruction}\n\n###Input:\n{input_text}\n\n###Response:"
             data.append({'Prompt': comb, 'input_text': input_text, 'output_text': final_output_text})
+            i += 1
         save_to_csv(f"paths_length_{length}.csv", data)
 
-max_path_length = 6
+max_path_length = 3
 paths = generate_all_paths(graph, max_path_length)
 process_paths(paths)
